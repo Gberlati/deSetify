@@ -22,7 +22,6 @@ task :deSetify do |args|
   end
 
   # browser = Watir::Browser.new :chrome, url: "https://www.youtube.com/"
-  
 
   
 end
@@ -31,14 +30,14 @@ def get_tracklist(video)
   comments = get_comments(video)
   comments.each do |c|
     break if check_comment(c) == true
-    
+    byebug
   end
   
   byebug
 end
 
 def get_comments(video)
-  Yt.configure { |config| config.api_key = 'AIzaSyC0Y7WdoQPadsxIw5zfQ67RWG2m_l8HHX8' }
+  Yt.configure { |config| config.api_key = ENV["YOUTUBE_API_KEY"] }
   ytvideo = Yt::Video.new(id: video)
   return ytvideo.comment_threads.where(order: 'relevance').take(100).map(&:text_display)
 end

@@ -6,7 +6,7 @@ ruby '2.6.6'
 gem 'watir'
 gem 'webdrivers'
 gem 'yt'
-
+gem 'dotenv-rails'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails', branch: 'main'
 gem 'rails', '~> 6.0.4'
