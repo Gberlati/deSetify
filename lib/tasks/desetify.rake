@@ -28,8 +28,8 @@ end
 
 def get_tracklist(video)
   comments = get_comments(video)
-  comments.each do |c|
-    break if check_comment(c) == true
+  comments.each do |comment|
+    break if check_comment(comment) == true
     byebug
   end
   
@@ -44,4 +44,6 @@ end
 
 def check_comment(comment)
   if comment =~ /^(?:(?:([01]?\d|2[0-3]):)?([0-5]?\d):)?([0-5]?\d)$/
+    return true
+  end
 end
