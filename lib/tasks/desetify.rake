@@ -17,7 +17,7 @@ task :deSetify do |args|
   
   if options[:type] = 'set'
     raise OptionParser::MissingArgument if options[:video].nil?
-    songs = get_tracklist(options[:video])
+    tracklist = get_tracklist(options[:video])
     byebug
   end
 
@@ -28,12 +28,13 @@ end
 
 def get_tracklist(video)
   comments = get_comments(video)
+  tracklist = []
   comments.each do |comment|
-    break if check_comment(comment) == true
-    byebug
+    comm = get_comment_array(comment)
+
+    return comm if comm.count() > 4
+    
   end
-  
-  byebug
 end
 
 def get_comments(video)
@@ -42,8 +43,26 @@ def get_comments(video)
   return ytvideo.comment_threads.where(order: 'relevance').take(100).map(&:text_display)
 end
 
-def check_comment(comment)
-  if comment =~ /^(?:(?:([01]?\d|2[0-3]):)?([0-5]?\d):)?([0-5]?\d)$/
-    return true
+def get_comment_array(comment)
+  
+  clean_comm = []
+
+  #Remove all whitespaces from string.
+  comm = comment.gsub(/\s+/, "")
+
+  #Convert all breaklines into spaces.
+  
+  comm = comm.gsub! '<br>', ' '
+
+  #gsub! converts comm to nil if a <br> is not found.
+  if !comm.nil?
+    #Split into array separated by spaces.
+    comm = comm.split
+    comm.each do |comm_str|
+      clean_comm.append(comm_str.partition('</a>').last) if !comm_str.index('</a>').nil?
+    end
+  else
+    return clean_comm
   end
+  return clean_comm
 end
