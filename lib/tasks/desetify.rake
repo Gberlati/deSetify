@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'optparse'
+require 'watir'
 
 task :deSetify => :environment do |args|
   
@@ -21,7 +22,12 @@ task :deSetify => :environment do |args|
     raise OptionParser::MissingArgument if options[:video].nil?
 
     tracklist = get_tracklist(options[:video])
+
+    browser = Watir::Browser.new :firefox
+    browser.goto "httpbin.org/headers"
+    #browser = Watir::Browser.new :firefox, url: "https://www.youtube.com/",  headless: true
     byebug
+
   end
 end
 
